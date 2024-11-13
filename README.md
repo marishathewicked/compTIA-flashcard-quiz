@@ -10,7 +10,7 @@ This repository contains a simple interactive flashcard quiz designed to help wi
 ## How to Use
 
 1. Visit the live version of the flashcard quiz:  
-   [https://your-username.github.io/compTIA-flashcard-quiz/](https://your-username.github.io/compTIA-flashcard-quiz/).
+   
 
 2. Click on the "Flip" button to reveal the answer to each question.
 
