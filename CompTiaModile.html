@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompTIA Flashcard Quiz</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .flashcard-container {
+            background-color: #E6D1F3; /* Light purple color */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%; /* 90% of screen width for mobile responsiveness */
+            max-width: 400px; /* Max width for larger screens */
+            text-align: center;
+            padding: 40px;
+            transition: transform 0.4s ease-in-out;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .flashcard-container.flip {
+            transform: rotateY(0deg);
+        }
+
+        .question, .answer {
+            font-size: 24px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .answer {
+            display: none;
+        }
+
+        .flashcard-container.flip .answer {
+            display: block;
+        }
+
+        .flashcard-container.flip .question {
+            display: none;
+        }
+
+        .btn {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background-color 0.3s ease;
+            width: 48%;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .explanation {
+            font-size: 18px;
+            color: #555;
+            display: none;
+            margin-top: 15px;
+        }
+
+        .flashcard-container.flip .explanation {
+            display: block;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 600px) {
+            .question, .answer {
+                font-size: 20px;
+            }
+            .btn {
+                font-size: 14px;
+                padding: 8px 16px;
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="flashcard-container" id="flashcard">
+    <div class="question" id="question">SSO</div>
+    <div class="answer" id="answer">Single Sign-On</div>
+    <div class="explanation" id="explanation">Single Sign-On allows a user to authenticate once and gain access to multiple systems without needing to log in again for each one.</div>
+    <button class="btn" onclick="flipCard()">Flip</button>
+    <button class="btn" onclick="nextCard()">Next</button>
+</div>
+
+<script>
+    const flashcards = [
+       {
+            question: "SSO",
+            answer: "Single Sign-On",
+            explanation: "Single Sign-On allows a user to authenticate once and gain access to multiple systems without needing to log in again for each one."
+        },
+        {
+            question: "RDP",
+            answer: "Remote Desktop Protocol.",
+            explanation: "RDP is a protocol developed by Microsoft to allow users to connect to another computer over a network and access its desktop interface."
+        },
+        {
+            question: "LTSB",
+            answer: "LTSB stands for Long-Term Servicing Branch.",
+            explanation: "LTSB is a version of Windows 10 designed for critical systems that require long-term stability, receiving security updates but no feature updates."
+        },
+        {
+            question: "EULA",
+            answer: "End User License Agreement.",
+            explanation: "EULA is a legal contract between the software provider and the user, outlining the terms under which the software can be used."
+        },
+        {
+            question: "PXE",
+            answer: "PXE stands for Preboot Execution Environment.",
+            explanation: "PXE is a standard for booting a computer using a network interface, allowing operating systems to be installed over a network connection."
+        },
+        {
+            question: "USMT",
+            answer: "USMT stands for User State Migration Tool.",
+            explanation: "USMT is a Microsoft tool used to transfer user profiles and settings from one computer to another, often during an OS upgrade or migration."
+        },
+        {
+            question: "OEM",
+            answer: "OEM stands for Original Equipment Manufacturer.",
+            explanation: "OEM refers to companies that manufacture hardware or software that is sold by another company under its brand name."
+        },
+        {
+            question: "USB",
+            answer: "Universal Serial Bus.",
+            explanation: "USB is a standard for connecting devices to a computer, allowing for data transfer and power supply between devices and the computer."
+        }
+    ];
+
+    let currentCard = 0;
+
+    const questionEl = document.getElementById("question");
+    const answerEl = document.getElementById("answer");
+    const explanationEl = document.getElementById("explanation");
+    const flashcardEl = document.getElementById("flashcard");
+
+    function updateCard() {
+        questionEl.textContent = flashcards[currentCard].question;
+        answerEl.textContent = flashcards[currentCard].answer;
+        explanationEl.textContent = flashcards[currentCard].explanation;
+        flashcardEl.classList.remove("flip");
+    }
+
+    function flipCard() {
+        flashcardEl.classList.toggle("flip");
+    }
+
+    function nextCard() {
+        currentCard = (currentCard + 1) % flashcards.length;
+        updateCard();
+    }
+
+    // Initialize the first card
+    updateCard();
+</script>
+
+</body>
+</html>
+
