@@ -34,7 +34,7 @@
         }
 
         .question, .answer {
-            font-size: 24px;
+            font-size: 26px;
             margin: 20px 0;
             font-weight: bold;
         }
@@ -51,7 +51,7 @@
             display: none;
         }
 
-        .btn {
+        .btn1 {
             background-color: #007bff;
             border: none;
             color: white;
@@ -63,9 +63,23 @@
             transition: background-color 0.3s ease;
             width: 48%;
         }
-
-        .btn:hover {
+       .btn2 {
+            background-color: #6fe373;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background-color 0.3s ease;
+            width: 48%;
+        }
+        .btn1:hover {
             background-color: #0056b3;
+        }
+       .btn2:hover {
+            background-color: #4da350;
         }
 
         .explanation {
@@ -85,7 +99,13 @@
             .question, .answer {
                 font-size: 20px;
             }
-            .btn {
+            .btn1 {
+                font-size: 14px;
+                padding: 8px 16px;
+                width: 100%;
+                margin: 5px 0;
+            }
+             .btn2 {
                 font-size: 14px;
                 padding: 8px 16px;
                 width: 100%;
@@ -100,8 +120,10 @@
     <div class="question" id="question">SSO</div>
     <div class="answer" id="answer">Single Sign-On</div>
     <div class="explanation" id="explanation">Single Sign-On allows a user to authenticate once and gain access to multiple systems without needing to log in again for each one.</div>
-    <button class="btn" onclick="flipCard()">Flip</button>
-    <button class="btn" onclick="nextCard()">Next</button>
+    <button class="btn1" onclick="flipCard()">Flip</button>
+    <button class="btn1" onclick="nextCard()">Next</button>
+    <button class="btn2" onclick="markAsLearned()">Learned</button>
+<button class="btn2 hidden" id="restartBtn" onclick="restartQuiz()">Restart</button>
 </div>
 
 <script>
@@ -116,29 +138,10 @@
             answer: "Remote Desktop Protocol.",
             explanation: "RDP is a protocol developed by Microsoft to allow users to connect to another computer over a network and access its desktop interface."
         },
-        {
-            question: "LTSB",
-            answer: "LTSB stands for Long-Term Servicing Branch.",
-            explanation: "LTSB is a version of Windows 10 designed for critical systems that require long-term stability, receiving security updates but no feature updates."
-        },
-        {
-            question: "EULA",
-            answer: "End User License Agreement.",
-            explanation: "EULA is a legal contract between the software provider and the user, outlining the terms under which the software can be used."
-        },
-        {
-            question: "PXE",
-            answer: "PXE stands for Preboot Execution Environment.",
-            explanation: "PXE is a standard for booting a computer using a network interface, allowing operating systems to be installed over a network connection."
-        },
-        {
-            question: "USMT",
-            answer: "USMT stands for User State Migration Tool.",
-            explanation: "USMT is a Microsoft tool used to transfer user profiles and settings from one computer to another, often during an OS upgrade or migration."
-        },
+
         {
             question: "OEM",
-            answer: "OEM stands for Original Equipment Manufacturer.",
+            answer: "Original Equipment Manufacturer.",
             explanation: "OEM refers to companies that manufacture hardware or software that is sold by another company under its brand name."
         },
         {
@@ -312,17 +315,33 @@
     explanation: "SPoD is a colloquial term used to describe the spinning beachball cursor in macOS, which indicates the system is busy or unresponsive."
 }
 
+       
 
     ];
 
-    let currentCard = 0;
+   let currentCard = 0;
+    let learnedCards = JSON.parse(localStorage.getItem('learnedCards')) || [];
 
     const questionEl = document.getElementById("question");
     const answerEl = document.getElementById("answer");
     const explanationEl = document.getElementById("explanation");
     const flashcardEl = document.getElementById("flashcard");
+    const restartBtn = document.getElementById("restartBtn");
 
     function updateCard() {
+        if (flashcards.length === learnedCards.length) {
+            questionEl.textContent = "All cards learned! 🎉";
+            answerEl.textContent = "";
+            explanationEl.textContent = "";
+            restartBtn.classList.remove("hidden");
+            return;
+        } else {
+            restartBtn.classList.add("hidden");
+        }
+
+        while (learnedCards.includes(currentCard)) {
+            currentCard = (currentCard + 1) % flashcards.length;
+        }
         questionEl.textContent = flashcards[currentCard].question;
         answerEl.textContent = flashcards[currentCard].answer;
         explanationEl.textContent = flashcards[currentCard].explanation;
@@ -338,10 +357,24 @@
         updateCard();
     }
 
+    function markAsLearned() {
+        if (!learnedCards.includes(currentCard)) {
+            learnedCards.push(currentCard);
+            localStorage.setItem('learnedCards', JSON.stringify(learnedCards));
+        }
+        nextCard();
+    }
+
+    function restartQuiz() {
+        learnedCards = [];
+        localStorage.removeItem('learnedCards');
+        currentCard = 0;
+        updateCard();
+    }
+
     // Initialize the first card
     updateCard();
 </script>
 
 </body>
 </html>
-
